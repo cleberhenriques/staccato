@@ -18,7 +18,7 @@ import com.example.mytodolist.ui.theme.MyTodoListTheme
 import com.example.mytodolist.ui.todo.AddTodoScreen
 import com.example.mytodolist.ui.todo.TodoListScreen
 import dev.marcellogalhardo.staccato.core.retainInHost
-
+import java.util.*
 
 @Composable
 internal fun MainView() {
@@ -38,6 +38,9 @@ internal fun MainView() {
             Routes.TodoList -> TodoListScreen(
                 onAddTodoClicked = {
                     vm.navigateToAddTodo()
+                },
+                onTodoToggled = {
+                    vm.toggleTodo(it)
                 }
             )
             Routes.AddTodo -> AddTodoScreen(
@@ -50,7 +53,8 @@ internal fun MainView() {
 }
 
 
-class Todo(
+data class Todo(
+        val uuid: UUID = UUID.randomUUID(),
         val title: String,
         val isDone: Boolean
 )

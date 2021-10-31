@@ -1,6 +1,7 @@
 package com.example.mytodolist.ui.todo
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -13,7 +14,8 @@ import com.example.mytodolist.Todo
 
 @Composable
 fun TodoListScreen(
-    onAddTodoClicked: () -> Unit,
+        onAddTodoClicked: () -> Unit,
+        onTodoToggled: (Todo) -> Unit
 ) {
     val vm = MainViewModelProvider.get()
     Surface(color = MaterialTheme.colors.background) {
@@ -30,17 +32,23 @@ fun TodoListScreen(
                 )
             },
             content = {
-                TodoList(vm.todoList.value)
+                TodoList(vm.todoList.value, onTodoToggled)
             },
         )
     }
 }
 
 @Composable
-fun TodoList(todoList: List<Todo>) {
+fun TodoList(
+        todoList: List<Todo>,
+        onToggle: (Todo) -> Unit
+) {
     LazyColumn {
         items(todoList) { item ->
-            Text(text = item.title)
+            Row {
+                Checkbox(checked = item.isDone, onCheckedChange = { onToggle(item) })
+                Text(text = item.title)
+            }
         }
     }
 }
@@ -53,5 +61,6 @@ fun TodoListPreview() {
             title = "Title $it",
             isDone = it > 3
         )
-    })
+    },
+    onToggle = {})
 }

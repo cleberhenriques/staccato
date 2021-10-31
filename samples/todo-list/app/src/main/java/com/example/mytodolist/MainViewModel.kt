@@ -21,6 +21,16 @@ class MainViewModel {
     fun addTodo(todo: Todo) {
         todoList.value = todoList.value + todo
     }
+
+    fun toggleTodo(todo: Todo) {
+        todoList.value = todoList.value.map {
+            if (it == todo) {
+                it.copy(isDone = !it.isDone)
+            } else {
+                it
+            }
+        }
+    }
 }
 
 enum class Routes {
